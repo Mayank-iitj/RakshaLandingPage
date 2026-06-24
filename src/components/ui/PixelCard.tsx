@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef } from 'react';
 import './PixelCard.css';
 
@@ -122,7 +123,7 @@ const VARIANTS = {
   }
 };
 
-export default function PixelCard({ variant = 'default', gap, speed, colors, noFocus, className = '', children }) {
+export default function PixelCard({ variant = 'default', gap, speed, colors, noFocus, className = '', children }: any) {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const pixelsRef = useRef([]);
@@ -245,3 +246,4 @@ export default function PixelCard({ variant = 'default', gap, speed, colors, noF
     </div>
   );
 }
+

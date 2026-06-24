@@ -3,6 +3,22 @@ import { gsap } from 'gsap';
 
 import './FlowingMenu.css';
 
+export interface FlowingMenuItemType {
+  link: string;
+  text: string;
+  image: string;
+}
+
+export interface FlowingMenuProps {
+  items?: FlowingMenuItemType[];
+  speed?: number;
+  textColor?: string;
+  bgColor?: string;
+  marqueeBgColor?: string;
+  marqueeTextColor?: string;
+  borderColor?: string;
+}
+
 function FlowingMenu({
   items = [],
   speed = 15,
@@ -11,7 +27,7 @@ function FlowingMenu({
   marqueeBgColor = '#fff',
   marqueeTextColor = '#120F17',
   borderColor = '#fff'
-}) {
+}: FlowingMenuProps) {
   return (
     <div className="menu-wrap" style={{ backgroundColor: bgColor }}>
       <nav className="menu">
@@ -31,22 +47,30 @@ function FlowingMenu({
   );
 }
 
-function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor }) {
-  const itemRef = useRef(null);
-  const marqueeRef = useRef(null);
-  const marqueeInnerRef = useRef(null);
-  const animationRef = useRef(null);
+interface MenuItemProps extends FlowingMenuItemType {
+  speed: number;
+  textColor: string;
+  marqueeBgColor: string;
+  marqueeTextColor: string;
+  borderColor: string;
+}
+
+function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marqueeTextColor, borderColor }: MenuItemProps) {
+  const itemRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeInnerRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<gsap.core.Tween | null>(null);
   const [repetitions, setRepetitions] = useState(4);
 
   const animationDefaults = { duration: 0.6, ease: 'expo' };
 
-  const findClosestEdge = (mouseX, mouseY, width, height) => {
+  const findClosestEdge = (mouseX: number, mouseY: number, width: number, height: number) => {
     const topEdgeDist = distMetric(mouseX, mouseY, width / 2, 0);
     const bottomEdgeDist = distMetric(mouseX, mouseY, width / 2, height);
     return topEdgeDist < bottomEdgeDist ? 'top' : 'bottom';
   };
 
-  const distMetric = (x, y, x2, y2) => {
+  const distMetric = (x: number, y: number, x2: number, y2: number) => {
     const xDiff = x - x2;
     const yDiff = y - y2;
     return xDiff * xDiff + yDiff * yDiff;
@@ -56,7 +80,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
     const calculateRepetitions = () => {
       if (!marqueeInnerRef.current) return;
 
-      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee__part');
+      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee__part') as HTMLElement;
       if (!marqueeContent) return;
 
       const contentWidth = marqueeContent.offsetWidth;
@@ -75,7 +99,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
     const setupMarquee = () => {
       if (!marqueeInnerRef.current) return;
 
-      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee__part');
+      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee__part') as HTMLElement;
       if (!marqueeContent) return;
 
       const contentWidth = marqueeContent.offsetWidth;
@@ -103,7 +127,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
     };
   }, [text, image, repetitions, speed]);
 
-  const handleMouseEnter = ev => {
+  const handleMouseEnter = (ev: React.MouseEvent) => {
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const x = ev.clientX - rect.left;
@@ -117,7 +141,7 @@ function MenuItem({ link, text, image, speed, textColor, marqueeBgColor, marquee
       .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0);
   };
 
-  const handleMouseLeave = ev => {
+  const handleMouseLeave = (ev: React.MouseEvent) => {
     if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const x = ev.clientX - rect.left;

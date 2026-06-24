@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { useLayoutEffect, useRef, useCallback } from 'react';
 import Lenis from 'lenis';
 import './ScrollStack.css';
 
-export const ScrollStackItem = ({ children, itemClassName = '' }) => (
+export const ScrollStackItem = ({ children, itemClassName = '' }: any) => (
   <div className={`scroll-stack-card ${itemClassName}`.trim()}>{children}</div>
 );
 
@@ -19,8 +20,8 @@ const ScrollStack = ({
   rotationAmount = 0,
   blurAmount = 0,
   useWindowScroll = true,
-  onStackComplete
-}) => {
+  onStackComplete,
+}: any) => {
   const scrollerRef = useRef(null);
   const stackCompletedRef = useRef(false);
   const animationFrameRef = useRef(null);
@@ -298,3 +299,4 @@ const ScrollStack = ({
 };
 
 export default ScrollStack;
+

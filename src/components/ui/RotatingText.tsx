@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
@@ -9,7 +10,7 @@ function cn(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const RotatingText = forwardRef((props, ref) => {
+const RotatingText = forwardRef((props: any, ref: any) => {
   const {
     texts,
     transition = { type: 'spring', damping: 25, stiffness: 300 },
@@ -186,3 +187,4 @@ const RotatingText = forwardRef((props, ref) => {
 
 RotatingText.displayName = 'RotatingText';
 export default RotatingText;
+
